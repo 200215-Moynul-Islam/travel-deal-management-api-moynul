@@ -28,3 +28,12 @@ def add_deal():
         "status": "success",
         "data": saved_deal
     }), HTTPStatus.CREATED
+
+@deal_bp.route('/deals', methods=[HTTPMethod.GET])
+def get_all_deals():
+    """Retrieve a collection listing of all saved travel deals."""
+    all_deals = deal_service.get_all_deals()
+    return jsonify({
+        "status": "success",
+        "data": all_deals
+    }), HTTPStatus.OK
