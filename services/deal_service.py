@@ -25,3 +25,21 @@ def get_all_deals() -> list:
 
     deals = TravelDeal.query.all()
     return [deal.to_dict() for deal in deals]
+
+def get_deal_by_id(id: int) -> dict:
+    """Retrieve a travel deal by ID.
+
+    Args:
+        id (int): Unique identifier of the travel deal.
+    
+    Returns:
+        dict: The deal data if found, or None if it doesn't exist.
+    """
+    # Look up the row directly by its primary key ID
+    deal = TravelDeal.query.get(id)
+    
+    if not deal:
+        return None
+    
+    return deal.to_dict()
+
