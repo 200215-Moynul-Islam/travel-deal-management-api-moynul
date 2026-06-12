@@ -16,10 +16,11 @@ def create_app():
         db.create_all()
 
     # Import blueprints
-    from routes import system_bp
+    from routes import system_bp, deal_bp
 
     # Register blueprints
     app.register_blueprint(system_bp, url_prefix='')
+    app.register_blueprint(deal_bp, url_prefix='')
 
     return app
 
