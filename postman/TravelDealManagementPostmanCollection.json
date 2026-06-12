@@ -1,0 +1,101 @@
+{
+  "info": {
+    "_postman_id": "4d87414c-d445-4c1e-849a-ec53859628e0",
+    "name": "TravelDealManagementApi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50422520"
+  },
+  "item": [
+    {
+      "name": "travel-deals",
+      "item": [
+        {
+          "name": "CreateDeal",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"Dubai\",\n  \"price\": 5000,\n  \"platform\": \"Booking\",\n  \"rating\": 4.5,\n  \"travel_type\": \"Luxury\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetAllDeals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetDealById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
