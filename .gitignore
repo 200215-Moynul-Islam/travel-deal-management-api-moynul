@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / generated objects
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+
+# Configuration and Secrets
+.env
+
+# IDEs and Editors
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
