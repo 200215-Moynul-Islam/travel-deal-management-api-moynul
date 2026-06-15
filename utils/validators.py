@@ -37,3 +37,34 @@ def validate_deal_payload(data: dict) -> list:
         errors.append(f"travel_type must be one of: {', '.join(sorted(TravelDealConstants.VALID_TYPES))}")
 
     return errors
+
+def validate_search_query(data: dict) -> list:
+    """Validate query parameters for searching travel deals.
+
+    Args:
+        data (dict): Query parameters' dictionary for searching travel deals.
+
+    Returns:
+        list: A list of error message strings. If empty, the payload is valid.
+    """
+
+    errors = []
+
+    destination = data.get("destination")
+    platform = data.get("platform")
+    travel_type = data.get("travel_type")
+
+    # Check for no query parameters
+    if not destination and not platform and not travel_type:
+        errors.append("Search query cannot be empty. Please provide at least one search filter ('destination', 'platform', or 'travel_type').")
+        return errors
+
+    # Check for empty query parameter value
+    if destination is not None and not str(destination).strip():
+        errors.append("Destination search term cannot be empty or whitespace.")
+    if platform is not None and not str(platform).strip():
+        errors.append("Platform search term cannot be empty or whitespace.")
+    if travel_type is not None and not str(travel_type).strip():
+        errors.append("Travel type search term cannot be empty or whitespace.")
+    
+    return errors
