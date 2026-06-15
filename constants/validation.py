@@ -9,3 +9,5 @@ class TravelDealConstants:
     VALID_TYPES = ("Budget", "Luxury", "Adventure", "Family")
     MIN_RATING = 1.0
     MAX_RATING = 5.0
+
+    ALLOWED_SORT_FIELD = "price"
