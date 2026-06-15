@@ -1,6 +1,6 @@
 # Travel Deal Management API
 
-A Flask-based REST API for managing travel deals, supporting creation and retrieval of deals with validation and error handling.
+A Flask-based REST API for managing travel deals, supporting creation, retrieval, search, filtering, sorting, and activity logging.
 
 ## Tech Stack
 
@@ -17,11 +17,11 @@ travel-deal-management-api-moynul/
 ├── routes/
 │   ├── __init__.py            # Blueprint exports
 │   ├── system_routes.py       # Health check route
-│   └── deal_routes.py          # Travel deal routes
+│   └── deal_routes.py         # Travel deal routes
 ├── services/
 │   └── deal_service.py        # Business logic for travel deals
 ├── utils/
-│   └── validators.py          # Request payload validation
+│   └── validators.py          # Request payload and query validation
 ├── database/
 │   ├── __init__.py            # Database exports
 │   └── models.py              # SQLAlchemy models
@@ -31,7 +31,7 @@ travel-deal-management-api-moynul/
 ├── postman/
 │   └── TravelDealManagementPostmanCollection.json  # Postman collection
 ├── requirements.txt           # Python dependencies
-├── .env.example                # Sample environment variables
+├── .env.example               # Sample environment variables
 └── README.md
 ```
 
@@ -134,6 +134,66 @@ GET /deals/<id>
 curl http://localhost:5000/deals/1
 ```
 
+### Search Deals
+
+```
+GET /deals/search
+```
+
+Query Parameters: `destination`, `platform`, `travel_type` (at least one required, case-insensitive partial match)
+
+```bash
+curl "http://localhost:5000/deals/search?destination=dubai"
+curl "http://localhost:5000/deals/search?platform=booking&travel_type=Luxury"
+```
+
+### Filter Deals by Budget
+
+```
+GET /deals/filter
+```
+
+Query Parameters: `min_price`, `max_price`
+
+```bash
+curl "http://localhost:5000/deals/filter?min_price=1000&max_price=5000"
+```
+
+**Validation Rules**
+
+- `min_price` cannot be negative
+- `max_price` cannot be smaller than `min_price`
+
+### Sort Deals
+
+```
+GET /deals/sort
+```
+
+Query Parameters: `sort_by` (required), `order` (`asc` or `desc`, default `asc`)
+
+```bash
+curl "http://localhost:5000/deals/sort?sort_by=price&order=asc"
+curl "http://localhost:5000/deals/sort?sort_by=price&order=desc"
+```
+
+**Validation Rules**
+
+- `sort_by` is required; only `price` is supported
+- `order` must be `asc` or `desc`
+
+### Recently Viewed Deals
+
+```
+GET /deals/recent
+```
+
+```bash
+curl http://localhost:5000/deals/recent
+```
+
+Returns the last 10 unique deals viewed via `GET /deals/<id>`.
+
 ## Response Format
 
 ```json
@@ -149,6 +209,16 @@ curl http://localhost:5000/deals/1
   "message": "Error description"
 }
 ```
+
+## Logging
+
+API activity is logged to `app.log` in the project root.
+
+| Level     | Tracked Events                                |
+| --------- | --------------------------------------------- |
+| `INFO`    | Successful operations, incoming requests      |
+| `WARNING` | Validation failures, invalid query parameters |
+| `ERROR`   | Internal server errors, failed API requests   |
 
 ## Postman Collection
 
