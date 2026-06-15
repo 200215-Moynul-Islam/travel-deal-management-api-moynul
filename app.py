@@ -1,4 +1,4 @@
-import os
+import os, logging
 from flask import Flask
 from dotenv import load_dotenv
 from database.models import db
@@ -7,6 +7,14 @@ from database.models import db
 load_dotenv()
 
 def create_app():
+    logging.basicConfig(
+        filename='app.log',
+        filemode='a',
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(module)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+
     app = Flask(__name__)
 
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///travel_deals.db')

@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "4d87414c-d445-4c1e-849a-ec53859628e0",
+    "_postman_id": "1175b292-6dd1-485c-baeb-0fe204bf818f",
     "name": "TravelDealManagementApi",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "50422520"
@@ -75,6 +75,120 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "SearchDeals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/search?destination=dub&platform=Booking&travel_type=Luxury",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "destination",
+                  "value": "dub"
+                },
+                {
+                  "key": "platform",
+                  "value": "Booking"
+                },
+                {
+                  "key": "travel_type",
+                  "value": "Luxury"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FilterDealsByBudget",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/filter?min_price=0&max_price=6000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "filter"
+              ],
+              "query": [
+                {
+                  "key": "min_price",
+                  "value": "0"
+                },
+                {
+                  "key": "max_price",
+                  "value": "6000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SortTravelDeals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/sort?sort_by=price&order=asc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "sort"
+              ],
+              "query": [
+                {
+                  "key": "sort_by",
+                  "value": "price"
+                },
+                {
+                  "key": "order",
+                  "value": "asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetRecentlyViewedDeals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/deals/recent",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "deals",
+                "recent"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -94,6 +208,14 @@
             "health"
           ]
         }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": []
       },
       "response": []
     }
