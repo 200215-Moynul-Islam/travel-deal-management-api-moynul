@@ -131,3 +131,13 @@ def get_sorted_deals(query_params: dict) -> list:
 def add_to_recently_viewed_deals_list(deal_id: int) -> None:
     if deal_id not in RECENTLY_VIEWED_DEAL_IDS:
         RECENTLY_VIEWED_DEAL_IDS.append(deal_id)
+
+def get_recently_viewed_deals() -> list:
+    """Retrieve recently viewed deals."""
+
+    if not RECENTLY_VIEWED_DEAL_IDS:
+        return []
+    
+    recently_viewed_deals = TravelDeal.query.filter(TravelDeal.id.in_(RECENTLY_VIEWED_DEAL_IDS)).all()
+
+    return [deal.to_dict() for deal in recently_viewed_deals]

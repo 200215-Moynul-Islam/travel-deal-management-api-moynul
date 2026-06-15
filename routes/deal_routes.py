@@ -158,3 +158,24 @@ def get_sorted_travel_deals():
             "status": "error",
             "message": "Internal server error."
         }), HTTPStatus.INTERNAL_SERVER_ERROR
+
+@deal_bp.route('/recent', methods=[HTTPMethod.GET])
+def get_recently_viewed_deals():
+    """Retrieve recently viewed deals."""
+
+    logging.info(f"Get recently viewed deals request received.")
+
+    try:
+        recently_viewed_deals_deals = deal_service.get_recently_viewed_deals()
+        logging.info(f"Get recently viewed deals executed successfully.")
+        return jsonify({
+            "status": "success",
+            "data": recently_viewed_deals_deals
+        }), HTTPStatus.OK
+        
+    except Exception as e:
+        logging.error(f"Internal server error: {str(e)}")
+        return jsonify({
+            "status": "error",
+            "message": "Internal server error."
+        }), HTTPStatus.INTERNAL_SERVER_ERROR
