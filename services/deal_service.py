@@ -3,8 +3,13 @@
 Performs business logic for travel deals.
 """
 
+from collections import deque
 from database.models import db
 from database.models import TravelDeal
+
+# In memeory store to remember recently viewed deals
+MAX_RECENTLY_VIEWED_DEALS = 10
+RECENTLY_VIEWED_DEAL_IDS = deque(maxlen=MAX_RECENTLY_VIEWED_DEALS)
 
 def create_new_deal(data: dict) -> dict:
     """Save a travel deal."""
@@ -40,6 +45,9 @@ def get_deal_by_id(id: int) -> dict:
     
     if not deal:
         return None
+    
+    # Add to recently viewed deal IDs store
+    add_to_recently_viewed_deals_list(id)
     
     return deal.to_dict()
 
@@ -119,3 +127,7 @@ def get_sorted_deals(query_params: dict) -> list:
 
     results = query.all()
     return [deal.to_dict() for deal in results]
+
+def add_to_recently_viewed_deals_list(deal_id: int) -> None:
+    if deal_id not in RECENTLY_VIEWED_DEAL_IDS:
+        RECENTLY_VIEWED_DEAL_IDS.append(deal_id)
