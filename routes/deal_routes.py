@@ -91,3 +91,38 @@ def search_travel_deals():
             "status": "error",
             "message": "Internal server error."
         }), HTTPStatus.INTERNAL_SERVER_ERROR
+
+@deal_bp.route('/filter', methods=[HTTPMethod.GET])
+def filter_travel_deals_by_budget():
+    """Retrieve travel deals filtered by price range."""
+
+    query_params = request.args.to_dict()
+    
+    logging.info(f"Filter request received with parameters: {query_params}")
+
+    # Validate the query parameters
+    validation_errors = validators.validate_filter_query(query_params)
+    if validation_errors:
+        logging.warning(f"Filter request failed validation: {validation_errors}")
+        return jsonify({
+            "status": "error",
+            "errors": validation_errors
+        }), HTTPStatus.BAD_REQUEST
+
+    try:
+        filtered_deals = deal_service.filter_deals_by_budget(query_params)
+
+        logging.info(f"Filter executed successfully.")
+        
+        return jsonify({
+            "status": "success",
+            "data": filtered_deals
+        }), HTTPStatus.OK
+        
+    except Exception as e:
+        logging.error(f"Internal server error: {str(e)}")
+
+        return jsonify({
+            "status": "error",
+            "message": "Internal server error."
+        }), HTTPStatus.INTERNAL_SERVER_ERROR
