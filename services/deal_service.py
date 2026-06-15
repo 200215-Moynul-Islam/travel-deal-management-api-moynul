@@ -43,3 +43,29 @@ def get_deal_by_id(id: int) -> dict:
     
     return deal.to_dict()
 
+def search_deals(query_params: dict) -> list:
+    """Search travel deals using partial, case-insensitive matching.
+
+    Args:
+        query_params (dict): Query parameters for searching.
+
+    Returns:
+        list: A list of travel deal dictionaries satisfying the search criteria.
+    """
+
+    query = TravelDeal.query
+
+    destination = query_params.get("destination")
+    platform = query_params.get("platform")
+    travel_type = query_params.get("travel_type")
+
+    # Filter the deals based on provided query parameters
+    if destination:
+        query = query.filter(TravelDeal.destination.ilike(f"%{destination.strip()}%"))  
+    if platform:
+        query = query.filter(TravelDeal.platform.ilike(f"%{platform.strip()}%"))
+    if travel_type:
+        query = query.filter(TravelDeal.travel_type.ilike(f"%{travel_type.strip()}%"))
+
+    filtered_deals = query.all()
+    return [deal.to_dict() for deal in filtered_deals]
