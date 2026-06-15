@@ -34,7 +34,7 @@ def validate_deal_payload(data: dict) -> list:
         errors.append(f"rating must be between {TravelDealConstants.MIN_RATING} and {TravelDealConstants.MAX_RATING}.")
 
     if data["travel_type"] not in TravelDealConstants.VALID_TYPES:
-        errors.append(f"travel_type must be one of: {', '.join(sorted(TravelDealConstants.VALID_TYPES))}")
+        errors.append(f"travel_type must be one of: {', '.join(TravelDealConstants.VALID_TYPES)}")
 
     return errors
 
@@ -67,4 +67,15 @@ def validate_search_query(data: dict) -> list:
     if travel_type is not None and not str(travel_type).strip():
         errors.append("Travel type search term cannot be empty or whitespace.")
     
+    #check for unknown travel type
+    if travel_type:
+        clean_travel_type = str(travel_type).strip()
+        
+        allowed_travel_types_lower = [t.lower() for t in TravelDealConstants.VALID_TYPES]
+        
+        if clean_travel_type.lower() not in allowed_travel_types_lower:
+            errors.append(
+                f"Unknown travel type: '{clean_travel_type}'. Allowed types are: {', '.join(TravelDealConstants.VALID_TYPES)}."
+            )
+
     return errors
