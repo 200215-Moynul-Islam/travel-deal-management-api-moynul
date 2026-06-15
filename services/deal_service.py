@@ -93,3 +93,29 @@ def filter_deals_by_budget(query_params: dict) -> list:
 
     filtered_deals = query.all()
     return [deal.to_dict() for deal in filtered_deals]
+
+def get_sorted_deals(query_params: dict) -> list:
+    """Sort travel deals in ascending or descending order.
+
+    Args:
+        query_params (dict): Query parameters for sorting.
+
+    Returns:
+        list: A list of sorted travel deal dictionaries.
+    """
+
+    query = TravelDeal.query
+
+    sort_field = str(query_params.get("sort_by")).strip().lower()
+    sort_order = str(query_params.get("order")).strip().lower()
+
+    model_attribute = getattr(TravelDeal, sort_field, None)
+
+    if model_attribute is not None:
+        if sort_order == "desc":
+            query = query.order_by(model_attribute.desc())
+        else:
+            query = query.order_by(model_attribute.asc()) # Sort in ascending order when order is not provided
+
+    results = query.all()
+    return [deal.to_dict() for deal in results]

@@ -126,3 +126,35 @@ def filter_travel_deals_by_budget():
             "status": "error",
             "message": "Internal server error."
         }), HTTPStatus.INTERNAL_SERVER_ERROR
+
+@deal_bp.route('/sort', methods=[HTTPMethod.GET])
+def get_sorted_travel_deals():
+    """Retrieve sorted travel deals in ascendign or descending order."""
+
+    query_params = request.args.to_dict()
+    
+    logging.info(f"Sort request received with parameters: {query_params}")
+
+    # Validate the query parameters
+    validation_errors = validators.validate_sort_query(query_params)
+    if validation_errors:
+        logging.warning(f"Sort request failed validation: {validation_errors}")
+        return jsonify({
+            "status": "error",
+            "errors": validation_errors
+        }), HTTPStatus.BAD_REQUEST
+
+    try:
+        sorted_deals = deal_service.get_sorted_deals(query_params)
+        logging.info(f"Get sorted deals executed successfully.")
+        return jsonify({
+            "status": "success",
+            "data": sorted_deals
+        }), HTTPStatus.OK
+        
+    except Exception as e:
+        logging.error(f"Internal server error: {str(e)}")
+        return jsonify({
+            "status": "error",
+            "message": "Internal server error."
+        }), HTTPStatus.INTERNAL_SERVER_ERROR

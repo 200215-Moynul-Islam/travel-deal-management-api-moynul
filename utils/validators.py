@@ -122,3 +122,33 @@ def validate_filter_query(data: dict) -> list:
             errors.append("Maximum price cannot be smaller than minimum price.")
 
     return errors
+
+def validate_sort_query(data: dict) -> list:
+    """Validate query parameters for sorting travel deals.
+
+    Args:
+        data (dict): Query parameters' dictionary containing sort_by and/or sort_order.
+
+    Returns:
+        list: A list of error message strings. If empty, the payload is valid.
+    """
+
+    errors = []
+    
+    sort_by = data.get("sort_by")
+    sort_order = data.get("order")
+
+    # Ensure sort_by is provided
+    if not sort_by:
+        errors.append("Missing required query parameter: 'sort_by'.")
+        return errors
+
+    if str(sort_by).strip().lower() != TravelDealConstants.ALLOWED_SORT_FIELD:
+        errors.append(f"Invalid sorting field: '{sort_by}'. Only 'price' is allowed as sorting field.")
+
+    # Validate sorting order
+    allowed_orders = ["asc", "desc"]
+    if sort_order is not None and sort_order.strip().lower() not in allowed_orders:
+        errors.append(f"Invalid sorting order: '{sort_order}'. Allowed values are: 'asc' or 'desc'.")
+
+    return errors
