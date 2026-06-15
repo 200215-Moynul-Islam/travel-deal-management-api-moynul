@@ -79,3 +79,46 @@ def validate_search_query(data: dict) -> list:
             )
 
     return errors
+
+def validate_filter_query(data: dict) -> list:
+    """Validate query parameters for filtering travel deals by budget.
+
+    Args:
+        data (dict): Query parameters' dictionary containing min_price and max_price.
+
+    Returns:
+        list: A list of error message strings. If empty, the payload is valid.
+    """
+
+    errors = []
+    
+    min_price_raw = data.get("min_price")
+    max_price_raw = data.get("max_price")
+
+    min_price = None
+    max_price = None
+
+    # Validate min_price if provided
+    if min_price_raw is not None:
+        try:
+            min_price = float(min_price_raw)
+            if min_price < 0:
+                errors.append("Minimum price cannot be negative.")
+        except ValueError:
+            errors.append("Minimum price must be a valid number.")
+
+    # Validate max_price if provided
+    if max_price_raw is not None:
+        try:
+            max_price = float(max_price_raw)
+            if max_price < 0:
+                errors.append("Maximum price cannot be negative.")
+        except ValueError:
+            errors.append("Maximum price must be a valid number.")
+
+    # Ensure max_price not less than min_price
+    if min_price is not None and max_price is not None:
+        if max_price < min_price:
+            errors.append("Maximum price cannot be smaller than minimum price.")
+
+    return errors
