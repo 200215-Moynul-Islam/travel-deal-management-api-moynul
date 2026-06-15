@@ -69,3 +69,27 @@ def search_deals(query_params: dict) -> list:
 
     filtered_deals = query.all()
     return [deal.to_dict() for deal in filtered_deals]
+
+def filter_deals_by_budget(query_params: dict) -> list:
+    """Filter travel deals by price range.
+
+    Args:
+        query_params (dict): Query parameters for filtering.
+
+    Returns:
+        list: A list of travel deal dictionaries filtered by price range.
+    """
+    query = TravelDeal.query
+
+    min_price = query_params.get("min_price")
+    max_price = query_params.get("max_price")
+
+    # Filter the deals based on provided query parameters
+    if min_price is not None and min_price != "":
+        query = query.filter(TravelDeal.price >= float(min_price))
+        
+    if max_price is not None and max_price != "":
+        query = query.filter(TravelDeal.price <= float(max_price))
+
+    filtered_deals = query.all()
+    return [deal.to_dict() for deal in filtered_deals]
