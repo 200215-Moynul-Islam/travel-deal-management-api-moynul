@@ -106,8 +106,8 @@ def get_sorted_deals(query_params: dict) -> list:
 
     query = TravelDeal.query
 
-    sort_field = query_params.get("sort_by").strip().lower()
-    sort_order = query_params.get("order").strip().lower()
+    sort_field = str(query_params.get("sort_by")).strip().lower()
+    sort_order = str(query_params.get("order")).strip().lower()
 
     model_attribute = getattr(TravelDeal, sort_field, None)
 
