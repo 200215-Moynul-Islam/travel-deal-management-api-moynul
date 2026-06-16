@@ -19,3 +19,6 @@ Thumbs.db
 
 # SQLite Database instance
 instance/
+
+# Log files
+*.log

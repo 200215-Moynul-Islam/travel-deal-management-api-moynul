@@ -1,6 +1,7 @@
 """Database Models."""
 
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime, timezone
 
 # Create SQLAlchemy instance
 db = SQLAlchemy()
@@ -28,3 +29,15 @@ class TravelDeal(db.Model):
             "rating": self.rating,
             "travel_type": self.travel_type
         }
+
+class ApiRequestLog(db.Model):
+    """Database schema table for storing request information."""
+
+    __tablename__ = 'api_request_logs'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    path = db.Column(db.String(255), nullable=False)
+    query_params = db.Column(db.Text, nullable=True)
+    method = db.Column(db.String(10), nullable=False)
+    status_code = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default= lambda: datetime.now(timezone.utc), nullable=False)
