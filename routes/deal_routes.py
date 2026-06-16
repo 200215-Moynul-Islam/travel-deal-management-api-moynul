@@ -223,3 +223,37 @@ def get_recently_viewed_deals():
             "status": "error",
             "message": "Internal server error."
         }), HTTPStatus.INTERNAL_SERVER_ERROR
+
+@deal_bp.route('/<int:id>', methods=[HTTPMethod.DELETE])
+def delete_deal_by_id(id: int):
+    """Delete a travel deal.
+    
+    Args:
+        id (int): Unique identifier of the travel deal.
+    """
+
+    logging.info(f"Delete deal request received.")
+
+    try:
+        success = deal_service.delete_deal_by_id(id)
+
+        if not success:
+            logging.warning(f"Deal with ID: {id} not found.")
+            return jsonify({
+                "status": "error",
+                "message": f"Deal with ID: {id} not found."
+            }), HTTPStatus.NOT_FOUND
+        
+        logging.info(f"Delete deal request executed successfully.")
+
+        return jsonify({
+            "status": "success",
+            "data": None
+        }), HTTPStatus.OK
+    
+    except Exception as e:
+        logging.error(f"Internal server error: {str(e)}")
+        return jsonify({
+            "status": "error",
+            "message": "Internal server error."
+        }), HTTPStatus.INTERNAL_SERVER_ERROR
