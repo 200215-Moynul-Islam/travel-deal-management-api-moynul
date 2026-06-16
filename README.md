@@ -1,6 +1,6 @@
 # Travel Deal Management API
 
-A Flask-based REST API for managing travel deals, supporting creation, retrieval, search, filtering, sorting, and activity logging.
+A Flask-based REST API for managing travel deals, supporting creation, retrieval, update, deletion, search, filtering, sorting, popularity tracking, and API usage statistics.
 
 ## Tech Stack
 
@@ -16,10 +16,11 @@ travel-deal-management-api-moynul/
 ├── app.py                     # Application entry point and app factory
 ├── routes/
 │   ├── __init__.py            # Blueprint exports
-│   ├── system_routes.py       # Health check route
+│   ├── system_routes.py       # Health check and stats routes
 │   └── deal_routes.py         # Travel deal routes
 ├── services/
-│   └── deal_service.py        # Business logic for travel deals
+│   ├── deal_service.py        # Business logic for travel deals
+│   └── system_service.py      # Business logic for API analytics
 ├── utils/
 │   └── validators.py          # Request payload and query validation
 ├── database/
@@ -85,6 +86,18 @@ GET /health
 curl http://localhost:5000/health
 ```
 
+### API Usage Statistics
+
+```
+GET /stats
+```
+
+```bash
+curl http://localhost:5000/stats
+```
+
+Returns total requests, successful requests, failed requests, most searched destination, and most viewed deal.
+
 ### Add a Travel Deal
 
 ```
@@ -132,6 +145,28 @@ GET /deals/<id>
 
 ```bash
 curl http://localhost:5000/deals/1
+```
+
+### Update a Travel Deal
+
+```
+PUT /deals/<id>
+```
+
+```bash
+curl -X PUT http://localhost:5000/deals/1 -H "Content-Type: application/json" -d '{"destination":"Bangkok","price":3000,"platform":"Agoda","rating":4.0,"travel_type":"Budget"}'
+```
+
+Applies the same validation rules as creating a deal.
+
+### Delete a Travel Deal
+
+```
+DELETE /deals/<id>
+```
+
+```bash
+curl -X DELETE http://localhost:5000/deals/1
 ```
 
 ### Search Deals
@@ -193,6 +228,18 @@ curl http://localhost:5000/deals/recent
 ```
 
 Returns the last 10 unique deals viewed via `GET /deals/<id>`.
+
+### Popular Deals
+
+```
+GET /deals/popular
+```
+
+```bash
+curl http://localhost:5000/deals/popular
+```
+
+Returns the top 5 most viewed deals, ranked by view count.
 
 ## Response Format
 
