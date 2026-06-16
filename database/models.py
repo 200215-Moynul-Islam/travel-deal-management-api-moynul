@@ -16,6 +16,7 @@ class TravelDeal(db.Model):
     platform = db.Column(db.String, nullable=False)
     rating = db.Column(db.Float, nullable=False)
     travel_type = db.Column(db.String, nullable=False)
+    view_count = db.Column(db.Integer, default=0, nullable=False)
 
     def to_dict(self) -> dict:
         """Transform SQL Alchemy object into a Python dictionary."""

@@ -257,3 +257,24 @@ def delete_deal_by_id(id: int):
             "status": "error",
             "message": "Internal server error."
         }), HTTPStatus.INTERNAL_SERVER_ERROR
+
+@deal_bp.route('/popular', methods=[HTTPMethod.GET])
+def get_popular_deals():
+    """Retrieve most viewed deals."""
+
+    logging.info(f"Get popular deals request received.")
+
+    try:
+        popular_deals = deal_service.get_popular_deals()
+        logging.info(f"Get popular deals executed successfully.")
+        return jsonify({
+            "status": "success",
+            "data": popular_deals
+        }), HTTPStatus.OK
+    
+    except Exception as e:
+        logging.error(f"Internal server error: {str(e)}")
+        return jsonify({
+            "status": "error",
+            "message": "Internal server error."
+        }), HTTPStatus.INTERNAL_SERVER_ERROR
