@@ -30,6 +30,50 @@ def add_deal():
         "data": saved_deal
     }), HTTPStatus.CREATED
 
+@deal_bp.route('/<int:id>', methods=[HTTPMethod.PUT])
+def update_deal_by_id(id: int):
+    """Update a travel deal.
+
+    Args:
+        id (int): Unique identifier of the travel deal.
+    """
+
+    update_deal_payload = request.get_json()
+
+    logging.info(f"Update request received with ID: {id} and payload: {update_deal_payload}")
+
+    validation_errors = validators.validate_deal_payload(update_deal_payload)
+    if validation_errors:
+        logging.warning(f"Update request failed validation: {validation_errors}")
+        return jsonify({
+            "status": "error",
+            "errors": validation_errors
+        }), HTTPStatus.BAD_REQUEST
+
+    try:
+        updated_deal = deal_service.update_deal_by_id(id, update_deal_payload)
+
+        if not updated_deal:
+            logging.warning(f"Travel deal with ID {id} not found.")
+            return jsonify({
+                "status": "error",
+                "message": f"Travel deal with ID {id} not found."
+            }), HTTPStatus.NOT_FOUND
+        
+        logging.info(f"Update request executed successfully.")
+
+        return jsonify({
+            "status": "success",
+            "data": updated_deal
+        }), HTTPStatus.OK
+    
+    except Exception as e:
+        logging.error(f"Internal server error: {str(e)}")
+        return jsonify({
+            "status": "error",
+            "message": "Internal server error."
+        }), HTTPStatus.INTERNAL_SERVER_ERROR
+
 @deal_bp.route('', methods=[HTTPMethod.GET])
 def get_all_deals():
     """Retrieve a collection listing of all saved travel deals."""
@@ -39,7 +83,7 @@ def get_all_deals():
         "data": all_deals
     }), HTTPStatus.OK
 
-@deal_bp.route('<int:id>', methods=[HTTPMethod.GET])
+@deal_bp.route('/<int:id>', methods=[HTTPMethod.GET])
 def get_deal_by_id(id : int):
     """Retrieve a deal by id
     
