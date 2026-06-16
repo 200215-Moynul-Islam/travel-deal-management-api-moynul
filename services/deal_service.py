@@ -11,6 +11,9 @@ from database.models import TravelDeal
 MAX_RECENTLY_VIEWED_DEALS = 10
 RECENTLY_VIEWED_DEAL_IDS = deque(maxlen=MAX_RECENTLY_VIEWED_DEALS)
 
+# Poupular deals limit
+POPULAR_DEALS_LIMIT = 5
+
 def create_new_deal(data: dict) -> dict:
     """Save a travel deal."""
     
@@ -62,6 +65,10 @@ def get_deal_by_id(id: int) -> dict:
     
     if not deal:
         return None
+    
+    # Increment the view count and save in the database
+    deal.view_count += 1
+    db.session.commit()
     
     # Add to recently viewed deal IDs store
     add_to_recently_viewed_deals_list(id)
@@ -178,3 +185,13 @@ def delete_deal_by_id(id: int) -> bool:
     db.session.commit()
 
     return True
+
+def get_popular_deals() -> list:
+    """Retrieve popular travel deals.
+    
+    Returns:
+        list: A list of Travel deal dictionaries.
+    """
+
+    popular_deals = TravelDeal.query.order_by(TravelDeal.view_count.desc()).limit(POPULAR_DEALS_LIMIT).all()
+    return [deal.to_dict() for deal in popular_deals]
