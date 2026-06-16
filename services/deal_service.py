@@ -25,6 +25,23 @@ def create_new_deal(data: dict) -> dict:
     db.session.commit()
     return new_deal.to_dict()
 
+def update_deal_by_id(id: int, update_deal_payload: dict) -> dict:
+    """Update a travel deal"""
+
+    deal = TravelDeal.query.get(id)
+    
+    if not deal:
+        return None
+    
+    deal.destination=update_deal_payload.get("destination").strip()
+    deal.price=float(update_deal_payload.get("price"))
+    deal.platform=update_deal_payload.get("platform").strip()
+    deal.rating=float(update_deal_payload.get("rating"))
+    deal.travel_type=update_deal_payload.get("travel_type")
+
+    db.session.commit()
+    return deal.to_dict()
+
 def get_all_deals() -> list:
     """Retrieve all travel deals."""
 
