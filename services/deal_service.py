@@ -158,3 +158,23 @@ def get_recently_viewed_deals() -> list:
     recently_viewed_deals = TravelDeal.query.filter(TravelDeal.id.in_(RECENTLY_VIEWED_DEAL_IDS)).all()
 
     return [deal.to_dict() for deal in recently_viewed_deals]
+
+def delete_deal_by_id(id: int) -> bool:
+    """Deal a travel deal by ID.
+
+    Args:
+        id (int): Unique identifier of the travel deal.
+    
+    Returns:
+        bool: True if deletion is successful, otherwise flase.
+    """
+
+    deal = TravelDeal.query.get(id)
+    
+    if not deal:
+        return False
+    
+    db.session.delete(deal)
+    db.session.commit()
+
+    return True
